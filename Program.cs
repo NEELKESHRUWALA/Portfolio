@@ -5,6 +5,10 @@ using Portfolio.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+Console.WriteLine("========================================");
+Console.WriteLine("!!! APP STARTING IN SQLITE MODE !!!");
+Console.WriteLine("========================================");
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
