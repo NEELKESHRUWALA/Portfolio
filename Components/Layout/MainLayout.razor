@@ -1,10 +1,13 @@
 @inherits LayoutComponentBase
+@using Portfolio.Application.Services
+@using Portfolio.Domain.Entities
+@inject IPortfolioService PortfolioSvc
 
 <div id="cursor-dot"></div>
 <div id="cursor-ring"></div>
 
 <nav class="nav">
-    <span class="nav-logo">N. Keshruwala</span>
+    <span class="nav-logo">@(Profile?.FirstName?.FirstOrDefault() ?? 'N'). @Profile?.LastName</span>
     <div class="nav-links">
         <a href="#work" class="nav-link">Work</a>
         <a href="#journey" class="nav-link">Journey</a>
@@ -18,12 +21,22 @@
 
 <footer class="site-footer">
     <div class="footer-content">
-        <div class="footer-brand">N. Keshruwala</div>
+        <div class="footer-brand">@(Profile?.FirstName?.FirstOrDefault() ?? 'N'). @Profile?.LastName</div>
         <div class="footer-links">
-            <a href="https://github.com/NEELKESHRUWALA" target="_blank" class="footer-link">GitHub</a>
-            <a href="https://www.linkedin.com/in/neel-keshruwala-41737526a/" target="_blank" class="footer-link">LinkedIn</a>
-            <a href="mailto:keshruwalaneel@gmail.com" class="footer-link">Email</a>
+            <a href="@Profile?.GithubUrl" target="_blank" class="footer-link">GitHub</a>
+            <a href="@Profile?.LinkedinUrl" target="_blank" class="footer-link">LinkedIn</a>
+            <a href="mailto:@Profile?.Email" class="footer-link">Email</a>
         </div>
         <div class="footer-copy">&copy; @DateTime.Now.Year — Built with Blazor & .NET 10</div>
     </div>
 </footer>
+
+@code {
+    private PersonalInfo? Profile;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var data = await PortfolioSvc.GetAllDataAsync();
+        Profile = data.Profile;
+    }
+}

@@ -1,7 +1,10 @@
 @page "/not-found"
 @layout MainLayout
+@using Portfolio.Application.Services
+@using Portfolio.Domain.Entities
+@inject IPortfolioService PortfolioSvc
 
-<PageTitle>404 - Page Not Found | Neel Keshruwala</PageTitle>
+<PageTitle>404 - Page Not Found | @(Profile?.FirstName) @(Profile?.LastName)</PageTitle>
 <HeadContent>
     <meta name="robots" content="noindex, follow" />
 </HeadContent>
@@ -33,3 +36,13 @@
         margin-bottom: 2rem;
     }
 </style>
+
+@code {
+    private PersonalInfo? Profile;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var data = await PortfolioSvc.GetAllDataAsync();
+        Profile = data.Profile;
+    }
+}

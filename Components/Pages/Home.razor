@@ -6,40 +6,40 @@
 @inject IJSRuntime JSRuntime
 @rendermode InteractiveServer
 
-<PageTitle>Neel Keshruwala | Software Engineer - .NET & Frontend Developer</PageTitle>
+<PageTitle>@(Profile?.FirstName) @(Profile?.LastName) | @Profile?.Title</PageTitle>
 <HeadContent>
-    <meta name="description" content="Neel Keshruwala - Software Engineer specializing in .NET 10, Blazor, React and high-concurrency backend systems. Building scalable, production-grade applications." />
+    <meta name="description" content="@(Profile?.FirstName) @(Profile?.LastName) - @Profile?.Description" />
     <meta name="keywords" content="software engineer, .NET developer, Blazor, React, frontend developer, backend developer, C#, ASP.NET Core, portfolio" />
-    <meta name="author" content="Neel Keshruwala" />
+    <meta name="author" content="@(Profile?.FirstName) @(Profile?.LastName)" />
     <meta name="robots" content="index, follow" />
     
     <!-- Open Graph -->
-    <meta property="og:title" content="Neel Keshruwala | Software Engineer - .NET & Frontend" />
-    <meta property="og:description" content="Building scalable, production-grade applications. Specialising in .NET 10, Blazor, React and high-concurrency backend systems." />
+    <meta property="og:title" content="@(Profile?.FirstName) @(Profile?.LastName) | @Profile?.Title" />
+    <meta property="og:description" content="@Profile?.Description" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://neelkeshr uwala.com" />
-    <meta property="og:image" content="https://neelkeshr uwala.com/images/neel_hero.jpg" />
+    <meta property="og:url" content="https://neelkeshruwala.com" />
+    <meta property="og:image" content="https://neelkeshruwala.com/images/neel_hero.jpg" />
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Neel Keshruwala | Software Engineer" />
-    <meta name="twitter:description" content="Building scalable, production-grade applications with .NET, Blazor, React." />
+    <meta name="twitter:title" content="@(Profile?.FirstName) @(Profile?.LastName) | @Profile?.Title" />
+    <meta name="twitter:description" content="@Profile?.Description" />
     
     <!-- Canonical -->
-    <link rel="canonical" href="https://neelkeshr uwala.com" />
+    <link rel="canonical" href="https://neelkeshruwala.com" />
     
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
         "@@context": "https://schema.org",
         "@@type": "Person",
-        "name": "Neel Keshruwala",
-        "jobTitle": "Software Engineer",
-        "url": "https://neelkeshr uwala.com",
-        "email": "keshruwalaneel@gmail.com",
+        "name": "@(Profile?.FirstName) @(Profile?.LastName)",
+        "jobTitle": "@Profile?.Title",
+        "url": "https://neelkeshruwala.com",
+        "email": "@Profile?.Email",
         "sameAs": [
-            "https://github.com/NEELKESHRUWALA",
-            "https://www.linkedin.com/in/neel-keshruwala-41737526a/"
+            "@Profile?.GithubUrl",
+            "@Profile?.LinkedinUrl"
         ],
         "knowsAbout": [
             ".NET", "Blazor", "React", "C#", "ASP.NET Core", "SQL Server", "Entity Framework Core"
@@ -62,21 +62,20 @@ else
 <section class="hero">
     <div class="hero-container">
         <div class="hero-content">
-            <p class="hero-eyebrow">Software Engineer — .NET &amp; Frontend</p>
+            <p class="hero-eyebrow">@Profile?.Title</p>
             <h1 class="hero-name">
-                <span class="hero-name-line">Neel</span>
-                <span class="hero-name-line">Keshruwala</span>
+                <span class="hero-name-line">@Profile?.FirstName</span>
+                <span class="hero-name-line">@Profile?.LastName</span>
             </h1>
             <div class="hero-meta">
                 <p class="hero-desc">
-                    Building scalable, production-grade applications. Specialising in .NET 10,
-                    Blazor, React and high-concurrency backend systems.
+                    @Profile?.Description
                 </p>
                 <div class="hero-cta">
-                    <a href="https://github.com/NEELKESHRUWALA" target="_blank" class="btn-gold">
+                    <a href="@Profile?.GithubUrl" target="_blank" class="btn-gold">
                         GitHub &nbsp;↗
                     </a>
-                    <a href="https://www.linkedin.com/in/neel-keshruwala-41737526a/" target="_blank" class="btn-ghost">
+                    <a href="@Profile?.LinkedinUrl" target="_blank" class="btn-ghost">
                         LinkedIn
                     </a>
                 </div>
@@ -86,7 +85,7 @@ else
             <div class="avatar-frame">
                 <div class="avatar-glow"></div>
                 <div class="avatar-ring"></div>
-                <img src="/images/neel_hero.jpg" alt="Neel Keshruwala" class="avatar" />
+                <img src="/images/neel_hero.jpg" alt="@(Profile?.FirstName) @(Profile?.LastName)" class="avatar" />
             </div>
             <div class="avatar-accent">
                 <span class="accent-dot"></span>
@@ -235,7 +234,7 @@ else
     <h2 class="contact-big">
         Let's build<br /><span>something</span><br />together.
     </h2>
-    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=keshruwalaneel@gmail.com"
+    <a href="mailto:@Profile?.Email"
        target="_blank" class="btn-gold">
         Initiate Contact &nbsp;→
     </a>

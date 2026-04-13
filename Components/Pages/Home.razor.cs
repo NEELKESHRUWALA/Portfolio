@@ -20,6 +20,7 @@ public partial class Home
     private List<Skill> Skills => _data?.Skills ?? [];
     private List<Education> Educations => _data?.Educations ?? [];
     private List<Certification> Certifications => _data?.Certifications ?? [];
+    private PersonalInfo? Profile => _data?.Profile;
 
     protected override async Task OnInitializedAsync()
     {
