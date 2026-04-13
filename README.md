@@ -2,7 +2,7 @@
 
 A modern, high-end Blazor portfolio application showcasing my projects, experiences, and skills. This project is built with .NET 10 and features an editorial UI with luxury-grade digital aesthetics.
 
-**Live Website:** [http://mynportfolio.runasp.net/](http://mynportfolio.runasp.net/)
+**Live Website:** [http://neelkesh.runasp.net/](http://neelkesh.runasp.net/)
 
 
 ## Features
@@ -14,7 +14,7 @@ A modern, high-end Blazor portfolio application showcasing my projects, experien
 ## Tech Stack
 - **Frontend**: Blazor Web App (C# / HTML / CSS)
 - **Backend**: ASP.NET Core
-- **Database**: Entity Framework Core with SQLite
+- **Database**: Entity Framework Core with SQL Server (MonsterASP)
 - **Styling**: Vanilla CSS with modern editorial layout
 
 ## Getting Started
@@ -27,5 +27,5 @@ A modern, high-end Blazor portfolio application showcasing my projects, experien
 **Neel Keshruwala**
 - [GitHub](https://github.com/NEELKESHRUWALA)
 - [LinkedIn](https://www.linkedin.com/in/neel-keshruwala-41737526a/)
-- [Portfolio](http://mynportfolio.runasp.net/)
+- [Portfolio](http://neelkesh.runasp.net/)
 
