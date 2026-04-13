@@ -1,0 +1,488 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ─── TOKENS ──────────────────────────────────────────────── */
+:root {
+    --bg: #0a0a0a;
+    --bg-alt: #0f0f0f;
+    --surface: #161616;
+    --surface-glass: rgba(22, 22, 22, 0.7);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-light: rgba(255, 255, 255, 0.12);
+    --gold: #e8c46a;
+    --gold-dim: rgba(232, 196, 106, 0.15);
+    --gold-glow: rgba(232, 196, 106, 0.4);
+    --white: #f5f5f5;
+    --white-dim: #c0c0c0;
+    --muted: #6b6b6b;
+    --accent: rgba(232, 196, 106, 0.5);
+    --gradient-hero: linear-gradient(135deg, #0a0a0a 0%, #1a1510 50%, #0d0a08 100%);
+}
+
+/* ─── RESET & BASE ────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 17px;
+}
+
+body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    overflow-x: hidden;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    cursor: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+h1,
+h2,
+h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+}
+
+/* ─── NOISE OVERLAY ───────────────────────────────────────── */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+}
+
+/* ─── AMBIENT BACKGROUND ──────────────────────────────────────── */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: 
+        radial-gradient(ellipse 80% 50% at 20% 40%, rgba(232, 196, 106, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 60%, rgba(232, 196, 106, 0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+    animation: bgShift 20s ease-in-out infinite;
+}
+
+@keyframes bgShift {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+/* ─── GLOW EFFECTS ─────────────────────────────────────────── */
+.glow {
+    position: relative;
+}
+
+.glow::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(45deg, var(--gold), transparent 50%, var(--gold));
+    border-radius: inherit;
+    opacity: 0;
+    filter: blur(8px);
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.glow:hover::before {
+    opacity: 0.5;
+}
+
+/* Glass Card */
+.glass {
+    background: var(--surface-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+}
+
+.glass-glow {
+    box-shadow: 0 0 0 1px var(--border),
+                0 20px 40px -20px rgba(0, 0, 0, 0.5),
+                0 0 60px -20px var(--gold-dim);
+}
+
+/* ─── CURSOR ──────────────────────────────────────────────── */
+#cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    box-shadow: 
+        0 0 10px var(--gold),
+        0 0 20px var(--gold),
+        0 0 40px var(--gold-dim);
+    animation: cursorPulse 1.5s ease-in-out infinite;
+}
+
+#cursor-ring {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(232, 196, 106, 0.6);
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%) rotate(0deg);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#cursor-ring.magnetic {
+    width: 60px;
+    height: 60px;
+    border-color: var(--gold);
+    border-width: 2px;
+    background: rgba(232, 196, 106, 0.05);
+    transform: translate(-50%, -50%) rotate(45deg);
+    box-shadow: 
+        0 0 20px var(--gold-dim),
+        inset 0 0 20px var(--gold-dim);
+}
+
+#cursor-ring.arrow {
+    clip-path: polygon(0 0, 0 6px, 2px 2px, 5px 0, 40px 0, 40px 8px, 35px 8px, 35px 40px, 27px 40px, 27px 8px, 0 8px);
+    background: transparent;
+    border: none;
+    width: 14px;
+    height: 14px;
+    animation: none;
+}
+
+@keyframes cursorPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.8; }
+}
+
+/* ─── SCROLLBAR ───────────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 2px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gold);
+}
+
+/* ─── NAV ─────────────────────────────────────────────────── */
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 2rem 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    font-style: italic;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.nav-link {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.3s;
+    cursor: none;
+}
+
+.nav-link:hover {
+    color: var(--white);
+}
+
+/* ─── BUTTONS (shared between Home + Modal) ───────────────── */
+.btn-gold {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 14px 36px;
+    background: var(--gold);
+    color: #0a0a0a;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: 'Inter', sans-serif;
+    cursor: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid var(--gold);
+    overflow: hidden;
+}
+
+.btn-gold::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+}
+
+.btn-gold:hover {
+    background: transparent;
+    color: var(--gold);
+    box-shadow: 0 0 30px -10px var(--gold);
+    transform: translateY(-2px);
+}
+
+.btn-gold:hover::before {
+    transform: translateX(100%);
+}
+
+.btn-ghost {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 14px 36px;
+    background: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--white-dim);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: 'Inter', sans-serif;
+    cursor: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-ghost:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--gold-dim);
+    transform: translateY(-2px);
+}
+
+/* ─── MODAL (child component → must stay in app.css) ─────── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(20px);
+    z-index: 50000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    max-width: 860px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    animation: modalIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-header {
+    padding: 3rem 3rem 2rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+}
+
+.modal-body {
+    padding: 2.5rem 3rem;
+}
+
+.modal-section {
+    margin-bottom: 2.5rem;
+}
+
+.modal-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+}
+
+.modal-text {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.8;
+}
+
+.modal-close {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 10px 24px;
+    cursor: none;
+    transition: all 0.3s;
+    float: right;
+    margin-top: -0.5rem;
+}
+
+.modal-close:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+.tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.8rem;
+}
+
+.tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+}
+
+/* ─── SHARED ANIMATIONS ───────────────────────────────────── */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ─── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 900px), (hover: none) {
+    body {
+        cursor: auto;
+    }
+
+    #cursor-dot,
+    #cursor-ring {
+        display: none;
+    }
+}
+
+/* ─── FOOTER ──────────────────────────────────────────────── */
+.site-footer {
+    padding: 4rem 6%;
+    border-top: 1px solid var(--border);
+    margin-top: 6rem;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--white);
+}
+
+.footer-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.footer-link {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: var(--gold);
+}
+
+.footer-copy {
+    font-size: 0.7rem;
+    color: var(--muted);
+    opacity: 0.6;
+}
