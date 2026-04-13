@@ -24,9 +24,6 @@ builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 
 var app = builder.Build();
 
-// Database is already initialized via EnsureCreated previously.
-// Migrations application is disabled at runtime to avoid conflict with existing tables.
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
