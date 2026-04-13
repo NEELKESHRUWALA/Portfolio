@@ -15,9 +15,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
 
-# Expose the port the app will run on (Railway uses PORT env var, but .NET defaults to 8080 or 80)
+# Expose the port (Railway uses PORT env var)
 EXPOSE 8080
-ENV ASPNETCORE_URLS=http://+:8080
 
-# Start the application
-ENTRYPOINT ["dotnet", "Portfolio.dll"]
+# Start the application and tell it to listen on the $PORT provided by Railway
+CMD dotnet Portfolio.dll --urls "http://0.0.0.0:${PORT:-8080}"
