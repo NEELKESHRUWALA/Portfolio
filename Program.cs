@@ -24,12 +24,8 @@ builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 
 var app = builder.Build();
 
-// Ensure Database is initialized and seeded from appsettings.json
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await context.Database.MigrateAsync();
-}
+// Database is already initialized via EnsureCreated previously.
+// Migrations application is disabled at runtime to avoid conflict with existing tables.
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
