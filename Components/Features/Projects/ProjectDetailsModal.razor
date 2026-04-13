@@ -1,0 +1,62 @@
+@using Portfolio.Domain.Entities
+
+@if (Show && Project != null)
+{
+    <div class="modal-overlay" @onclick="Close">
+        <div class="modal-panel" @onclick:stopPropagation>
+
+            <div class="modal-header">
+                <button class="modal-close" @onclick="Close">Close ✕</button>
+                <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem">
+                    Case Study
+                </p>
+                <div class="modal-title">@Project.Title</div>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-section">
+                    <p class="modal-label">Overview</p>
+                    <p class="modal-text">@Project.FullDescription</p>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2.5rem">
+                    <div class="modal-section">
+                        <p class="modal-label">The Challenge</p>
+                        <p class="modal-text">@Project.Challenges</p>
+                    </div>
+                    <div class="modal-section">
+                        <p class="modal-label">The Approach</p>
+                        <p class="modal-text">@Project.Handling</p>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <p class="modal-label">Recruiter Perspective</p>
+                    <p class="modal-text" style="font-style:italic;color:var(--white)">"@Project.RecruiterPerspective"</p>
+                </div>
+
+                <div class="modal-section">
+                    <p class="modal-label">Stack</p>
+                    <div class="tag-row">
+                        @foreach (var tag in Project.Stack.Split(','))
+                        {
+                            <span class="tag">@tag.Trim()</span>
+                        }
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:1rem;margin-top:2rem">
+                    <a href="#" class="btn-gold">View Demo ↗</a>
+                    <a href="#" class="btn-ghost">Repository</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public Project Project { get; set; } = null!;
+    [Parameter] public bool Show { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+    private async Task Close() => await OnClose.InvokeAsync();
+}

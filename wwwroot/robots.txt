@@ -1,0 +1,5 @@
+# Robots.txt for Neel Keshruwala Portfolio
+User-agent: *
+Allow: /
+
+Sitemap: https://neelkeshr uwala.com/sitemap.xml

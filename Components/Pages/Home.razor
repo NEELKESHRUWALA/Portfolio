@@ -1,0 +1,248 @@
+@page "/"
+@using Portfolio.Domain.Entities
+@using Portfolio.Application.Services
+@using Portfolio.Components.Features.Projects
+@inject IPortfolioService PortfolioService
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<PageTitle>Neel Keshruwala | Software Engineer - .NET & Frontend Developer</PageTitle>
+<HeadContent>
+    <meta name="description" content="Neel Keshruwala - Software Engineer specializing in .NET 10, Blazor, React and high-concurrency backend systems. Building scalable, production-grade applications." />
+    <meta name="keywords" content="software engineer, .NET developer, Blazor, React, frontend developer, backend developer, C#, ASP.NET Core, portfolio" />
+    <meta name="author" content="Neel Keshruwala" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Neel Keshruwala | Software Engineer - .NET & Frontend" />
+    <meta property="og:description" content="Building scalable, production-grade applications. Specialising in .NET 10, Blazor, React and high-concurrency backend systems." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://neelkeshr uwala.com" />
+    <meta property="og:image" content="https://neelkeshr uwala.com/images/neel_hero.jpg" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Neel Keshruwala | Software Engineer" />
+    <meta name="twitter:description" content="Building scalable, production-grade applications with .NET, Blazor, React." />
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://neelkeshr uwala.com" />
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "Person",
+        "name": "Neel Keshruwala",
+        "jobTitle": "Software Engineer",
+        "url": "https://neelkeshr uwala.com",
+        "email": "keshruwalaneel@gmail.com",
+        "sameAs": [
+            "https://github.com/NEELKESHRUWALA",
+            "https://www.linkedin.com/in/neel-keshruwala-41737526a/"
+        ],
+        "knowsAbout": [
+            ".NET", "Blazor", "React", "C#", "ASP.NET Core", "SQL Server", "Entity Framework Core"
+        ]
+    }
+    </script>
+</HeadContent>
+
+<!-- Loading State -->
+@if (_isLoading)
+{
+    <div class="loading-screen">
+        <div class="loader"></div>
+    </div>
+}
+else
+{
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-container">
+        <div class="hero-content">
+            <p class="hero-eyebrow">Software Engineer — .NET &amp; Frontend</p>
+            <h1 class="hero-name">
+                <span class="hero-name-line">Neel</span>
+                <span class="hero-name-line">Keshruwala</span>
+            </h1>
+            <div class="hero-meta">
+                <p class="hero-desc">
+                    Building scalable, production-grade applications. Specialising in .NET 10,
+                    Blazor, React and high-concurrency backend systems.
+                </p>
+                <div class="hero-cta">
+                    <a href="https://github.com/NEELKESHRUWALA" target="_blank" class="btn-gold">
+                        GitHub &nbsp;↗
+                    </a>
+                    <a href="https://www.linkedin.com/in/neel-keshruwala-41737526a/" target="_blank" class="btn-ghost">
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image-wrap">
+            <div class="avatar-frame">
+                <div class="avatar-glow"></div>
+                <div class="avatar-ring"></div>
+                <img src="/images/neel_hero.jpg" alt="Neel Keshruwala" class="avatar" />
+            </div>
+            <div class="avatar-accent">
+                <span class="accent-dot"></span>
+                <span class="accent-line"></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- FEATURED PROJECTS -->
+<section id="work" class="section">
+    <p class="section-label">Selected Work</p>
+
+    <div class="projects-list fade-in-up">
+        @if (Projects.Count > 0)
+        {
+            int idx = 1;
+            @foreach (var p in Projects)
+            {
+                var captured = p;
+                <button class="proj-btn" @onclick="() => SelectProject(captured)">
+                    <div class="project-row">
+                        <span class="proj-num">0@(idx++)</span>
+                        <div class="proj-info">
+                            <div class="proj-title">
+                                @if (!string.IsNullOrEmpty(p.Icon))
+                                {
+                                    <i class="bi @p.Icon me-2" style="font-size: 0.8em; color: var(--gold); vertical-align: middle;"></i>
+                                }
+                                @p.Title
+                            </div>
+                            <div class="proj-stack">
+                                @foreach (var tag in p.Stack.Split(','))
+                                {
+                                    <span class="proj-tag">@tag.Trim()</span>
+                                }
+                            </div>
+                        </div>
+                        <span class="proj-arrow">→</span>
+                    </div>
+                </button>
+            }
+        }
+    </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- SKILLS -->
+@if (Skills.Count > 0)
+{
+    <section id="skills" class="section">
+        <p class="section-label">Skills</p>
+        
+        <div class="skills-grid">
+            @{
+                var categories = Skills.Select(s => s.Category).Distinct().ToList();
+            }
+            @foreach (var category in categories)
+            {
+                <div class="skill-column glass">
+                    <h3 class="skill-cat-title">@category</h3>
+                    <div class="skill-list">
+                        @foreach (var skill in Skills.Where(s => s.Category == category))
+                        {
+                            <div class="skill-item">
+                                <span class="skill-name">@skill.Name</span>
+                                <div class="skill-bar-wrap">
+                                    <div class="skill-bar" style="width: @skill.Proficiency%"></div>
+                                </div>
+                                <span class="skill-pct">@skill.Proficiency%</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+    
+    <hr class="section-divider" />
+}
+
+<!-- JOURNEY / EXPERIENCE -->
+<section id="journey" class="section">
+    <p class="section-label">Journey</p>
+
+    <div class="timeline fade-in-up">
+        @foreach (var exp in Experiences)
+        {
+            <div class="timeline-period">@exp.Period</div>
+            <div class="timeline-content">
+                <div class="timeline-role">@exp.JobTitle</div>
+                <div class="timeline-co">@exp.Company</div>
+                <p class="timeline-desc">@exp.Description</p>
+            </div>
+        }
+    </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- EDUCATION -->
+<section class="section">
+    <p class="section-label">Education</p>
+    <div class="edu-grid fade-in-up">
+        @foreach (var edu in Educations)
+        {
+            <div class="edu-card">
+                <div class="edu-inst">@edu.Institution</div>
+                <div class="edu-degree">@edu.Degree</div>
+                <div class="edu-period">@edu.Period</div>
+                @if (!string.IsNullOrEmpty(edu.Details))
+                {
+                    <div class="edu-details">@edu.Details</div>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- CERTIFICATIONS -->
+@if (Certifications.Count > 0)
+{
+    <section class="section">
+        <p class="section-label">Certifications</p>
+        <div class="certs-grid fade-in-up">
+            @foreach (var cert in Certifications)
+            {
+                <div class="cert-card">
+                    <div class="cert-issuer">@cert.Issuer</div>
+                    <div class="cert-name">@cert.Name</div>
+                </div>
+            }
+        </div>
+    </section>
+
+    <hr class="section-divider" />
+}
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+    <h2 class="contact-big">
+        Let's build<br /><span>something</span><br />together.
+    </h2>
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=keshruwalaneel@gmail.com"
+       target="_blank" class="btn-gold">
+        Initiate Contact &nbsp;→
+    </a>
+</section>
+
+<ProjectDetailsModal Show="@showModal" Project="@selectedProject" OnClose="() => showModal = false" />
+
+}
+
+@code { }
