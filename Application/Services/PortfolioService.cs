@@ -9,6 +9,7 @@ public class PortfolioService : IPortfolioService
 {
     private readonly AppDbContext _context;
     private static readonly ConcurrentDictionary<string, object> _cache = new();
+    private static readonly SemaphoreSlim _semaphore = new(1, 1);
 
     public PortfolioService(AppDbContext context) => _context = context;
 
@@ -35,22 +36,36 @@ public class PortfolioService : IPortfolioService
         var educations = await GetEducationsAsync(ct);
         var certifications = await GetCertificationsAsync(ct);
 
-        var profileDto = await _context.PersonalInfos.AsNoTracking().FirstOrDefaultAsync(ct);
+        var profileDto = await GetOrSetCacheAsync("profile", () => _context.PersonalInfos.AsNoTracking().FirstOrDefaultAsync(ct), ct);
         var profile = profileDto != null
-            ? new PersonalInfo(profileDto.FirstName, profileDto.LastName, profileDto.Title, profileDto.Description, profileDto.GithubUrl, profileDto.LinkedinUrl, profileDto.Email)
-            : new PersonalInfo("", "", "", "", "", "", "");
+            ? profileDto
+            : new PersonalInfo { FirstName = "", LastName = "", Title = "", Description = "", GithubUrl = "", LinkedinUrl = "", Email = "" };
 
         return new PortfolioData(profile, projects, experiences, skills, educations, certifications);
     }
 
     private async Task<T> GetOrSetCacheAsync<T>(string key, Func<Task<T>> factory, CancellationToken ct) where T : class
     {
-        if (_cache.TryGetValue(key, out var cached) && cached is T result)
-            return result;
+        if (_cache.TryGetValue(key, out var cached) && cached is T result1)
+            return result1;
 
-        result = await factory();
-        _cache.TryAdd(key, result);
-        return result;
+        await _semaphore.WaitAsync(ct);
+        try
+        {
+            if (_cache.TryGetValue(key, out var cachedInside) && cachedInside is T result2)
+                return result2;
+
+            var result = await factory();
+            if (result != null)
+            {
+                _cache.TryAdd(key, result);
+            }
+            return result!;
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 
     public static void ClearCache() => _cache.Clear();

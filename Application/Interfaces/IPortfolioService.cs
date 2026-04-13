@@ -10,18 +10,8 @@ public interface IPortfolioService
     Task<PortfolioData> GetAllDataAsync(CancellationToken ct = default);
 }
 
-public record PersonalInfo(
-    string FirstName,
-    string LastName,
-    string Title,
-    string Description,
-    string GithubUrl,
-    string LinkedinUrl,
-    string Email
-);
-
 public record PortfolioData(
-    PersonalInfo Profile,
+    Domain.Entities.PersonalInfo Profile,
     List<Domain.Entities.Project> Projects,
     List<Domain.Entities.Experience> Experiences,
     List<Domain.Entities.Skill> Skills,
