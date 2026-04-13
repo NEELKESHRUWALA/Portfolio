@@ -9,9 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Configure Infrastructure: DB Context with SQL Server
+// Configure Infrastructure: DB Context with SQLite
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure Application: Register Portfolio Service (Dependency Injection)
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
